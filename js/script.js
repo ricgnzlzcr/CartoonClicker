@@ -42,14 +42,24 @@ $(document).ready(function() {
                 ++model.currToon.clicks;
                 toonView.render();
             });
+        },
+        getAllCartoons: function() {
+            return model.cartoons;
+        },
+        getCurrentToon: function() {
+            return model.currToon;
+        },
+        setCurrentToon: function(toon) {
+            model.currToon = toon;
         }
     };
 
     var buttonView = {
         init: function() {
             var buttonList = $('#toonlist');
-            for (var i = 0; i < model.cartoons.length; i++) {
-                var toon = model.cartoons[i];
+            var cartoons = controller.getAllCartoons();
+            for (var i = 0; i < cartoons.length; i++) {
+                var toon = cartoons[i];
                 var btn = buttonView.buttonHTML.replace('%btnNum%', i).replace('%name%', toon.name);
                 buttonList.append(btn);
             }
@@ -59,8 +69,9 @@ $(document).ready(function() {
 
     var toonView = {
         init: function() {
-            if (model.cartoons.length > 0) {
-                model.currToon = model.cartoons[0];
+            var cartoons = controller.getAllCartoons();
+            if (cartoons.length > 0) {
+                controller.setCurrentToon(cartoons[0]);
             }
             toonView.render();
         },
@@ -70,7 +81,7 @@ $(document).ready(function() {
             $('.toon').html("");
 
             //Add current toon to screen
-            var currToon = model.currToon;
+            var currToon = controller.getCurrentToon();
             var toonHTML = toonView.viewerHTML.replace("%clicks%", currToon.clicks).replace("%id%", currToon.id).replace("%name%", currToon.name);
             $('.toon').append(toonHTML);
         }
